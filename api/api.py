@@ -97,19 +97,31 @@ CREATE TABLE IF NOT EXISTS users (
 
   @staticmethod
   def verificarCodigo(login, codigo_digitado):
-    Aluno.cursor.execute("SELECT reset_code, reset_expires FROM users WHERE login = ?", (login,))
 
-    row = Aluno.cursor.fetchone()
+      Aluno.cursor.execute(
+          """
+          SELECT reset_code,
+                reset_expires
+          FROM users
+          WHERE login = ?
+          """,
+          (login,)
+      )
 
-    if row:
-      codigo_salvo = row[0]
-      expiracao = row[1]
+      row = Aluno.cursor.fetchone()
 
-      if (
-        codigo_digitado == codigo_salvo 
-        and time.time() < expiracao
-      ):
-        print("Código válido")
+      if row:
+
+          codigo_salvo = row[0]
+          expiracao = row[1]
+
+          if (
+              codigo_digitado == codigo_salvo
+              and time.time() < expiracao
+          ):
+              return True
+
+      return False
 
   @staticmethod
   def encrypt(senha):
@@ -118,7 +130,7 @@ CREATE TABLE IF NOT EXISTS users (
 
   @staticmethod
   def add(login, name, email, phone, birthday, is_student, passwd):  # ---> Make a function for add a new Person
-    nascimento = datetime.strptime(birthday, "%d/%m/%Y").date()
+    nascimento = datetime.strptime(birthday, "%Y-%m-%d").date()
     if (nascimento.year > date.today().year) or (nascimento.year < (date.today().year - 130)):
       print("Data de aniversario invalida")
     elif (is_student != "1") and (is_student != "0"):
@@ -149,7 +161,7 @@ CREATE TABLE IF NOT EXISTS users (
   
   @staticmethod
   def calcular_idade(data_str):
-    nascimento = datetime.strptime(data_str, "%d/%m/%Y").date()
+    nascimento = datetime.strptime(data_str, "%Y-%m-%d").date()
     hoje = date.today()
 
     idade = hoje.year - nascimento.year

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nova Senha</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <div class="login-container">
+
+    <h1>Nova senha</h1>
+  
+    <form method="POST">
+  
+        <input
+            type="password"
+            name="senha"
+            placeholder="Nova senha"
+            required
+        >
+        <input
+            type="password"
+            name="confirm_senha"
+            placeholder="Confirmar senha"
+            required
+        >
+
+        <div class="mensagem">
+          {% if mensagem != "" %}
+              <p id="mensagem">{{ mensagem }}</p>
+          {% endif %}
+        </div>
+  
+        <button type="submit">
+            Alterar senha
+        </button>
+        
+        <a href="/">Voltar</a>
+
+    </form>
+    <script>
+      const msg = document.getElementById("mensagem");
+      
+      setTimeout(function() {
+            if (msg) {
+                msg.innerHTML = "";
+            }
+        }, 5000);
+    </script>
+  </div>
+
+</body>
+</html>

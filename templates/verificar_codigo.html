@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verificar Código</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="login-container">
+
+    <h1>Digite o código recebido</h1>
+  
+    <form method="POST">
+  
+        <input
+            type="text"
+            name="codigo"
+            placeholder="Código"
+            required
+        >
+        <div class="mensagem">
+            <p id="mensagem">{{ mensagem }}</p>
+        </div>
+  
+        <button type="submit">
+            Verificar
+        </button>
+  
+        <a href="/">Voltar</a>
+
+    </form>
+    
+  </div>
+
+</body>
+</html>

@@ -1,16 +1,24 @@
-{% if not codigo_enviado %}
-
-<form method="POST">
-    <input name="usuario">
-    <button>Enviar código</button>
-</form>
-
-{% else %}
-
-<form method="POST">
-    <input name="codigo" placeholder="Código">
-    <input name="senha" type="password" placeholder="Nova senha">
-    <button>Alterar senha</button>
-</form>
-
-{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperação de Senha</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="login-container">
+    <form method="POST">
+        <h1>Recpuração de Senha</h1>
+        <input name="usuario", placeholder="Usuario">
+            <div class="mensagem">
+                {% if mensagem %}
+                <p id="mensagem">{{ mensagem }}</p>
+                {% endif %}
+            </div>
+        <button>Enviar código</button>
+        <a href="/">Voltar</a>
+    </form>
+  </div>
+</body>
+</html>

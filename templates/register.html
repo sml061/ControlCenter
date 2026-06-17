@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ControlCenter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>ControlCenter</h1>
+
+        <form method="POST">
+            <input
+                type="text"
+                name="name"
+                placeholder="Nome Completo"
+                required
+            >
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Usuário"
+                required
+            >
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required
+            >
+
+            <input
+                type="text"
+                name="phone"
+                placeholder="Telefone"
+                required
+            >
+
+            <input
+                type="date"
+                name="birthday"
+                placeholder="Nascimento"
+                required
+            >
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Senha"
+                required
+            >
+
+            <input
+                type="password"
+                name="confirmpassword"
+                placeholder="Confirmar Senha"
+                required
+            >
+
+            <div class="mensagem">
+                {% if mensagem %}
+                <p id="mensagem">{{ mensagem }}</p>
+                {% endif %}
+            </div>
+
+            <button type="submit">
+                Cadastrar
+            </button>
+
+            <a href="/">Já possuo uma conta</a>
+            <div class="show-password">
+            </div>
+        </form>
+    </div>
+</body>
+</html>
