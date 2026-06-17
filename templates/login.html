@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ControlCenter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>ControlCenter</h1>
+
+        <form method="POST">
+            <input
+                type="text"
+                name="username"
+                placeholder="Usuário"
+                required
+            >
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Senha"
+                required
+            >
+
+            <div class="mensagem">
+                {% if mensagem %}
+                <p id="mensagem">{{ mensagem }}</p>
+                {% endif %}
+            </div>
+
+            <button type="submit">
+                Entrar
+            </button>
+
+            <a href="/remember">Esqueci minha senha</a>
+            <div class="show-password">
+                <input type="checkbox" id="ver-senha" name="show-pass">
+                <label for="ver-senha">Ver senha</label>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        const checkbox = document.getElementById("ver-senha");
+        const senha = document.querySelector('input[name="password"]');
+
+        checkbox.addEventListener("change", () => {
+            senha.type = checkbox.checked ? "text" : "password";
+        });
+
+        setTimeout(function() {
+            const msg = document.getElementById("mensagem");
+
+            if (msg) {
+                msg.innerHTML = "";
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

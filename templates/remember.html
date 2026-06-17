@@ -1,0 +1,16 @@
+{% if not codigo_enviado %}
+
+<form method="POST">
+    <input name="usuario">
+    <button>Enviar código</button>
+</form>
+
+{% else %}
+
+<form method="POST">
+    <input name="codigo" placeholder="Código">
+    <input name="senha" type="password" placeholder="Nova senha">
+    <button>Alterar senha</button>
+</form>
+
+{% endif %}

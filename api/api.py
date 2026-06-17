@@ -1,7 +1,11 @@
+import time
 import json
 import sqlite3
 import bcrypt
+import random
+import smtplib
 from datetime import datetime, date
+from email.message import EmailMessage
 
 class Aluno():
   try:
@@ -12,7 +16,7 @@ class Aluno():
   
   db = resultadoJson["database"]
   dirdb = resultadoJson["dirDatabasse"]
-  conn = sqlite3.connect(f"{dirdb}/{db}")
+  conn = sqlite3.connect(f"{dirdb}/{db}", check_same_thread=False)
 
   cursor = conn.cursor()
 
@@ -25,10 +29,88 @@ CREATE TABLE IF NOT EXISTS users (
     phone TEXT NOT NULL,
     birthday TEXT NOT NULL,
     is_student INTEGER NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    reset_code TEXT,
+    reset_expires INTEGER
 );
 """)
-  
+
+  @staticmethod
+  def enviarEmail(user):
+    codigo = str(random.randint(100000, 999999))
+    expira_em = int(time.time()) + 300
+    Aluno.cursor.execute("SELECT email FROM users WHERE login = ?", (user,))
+    row = Aluno.cursor.fetchone()
+    if not row:
+      return False
+    email_usuario = row[0]
+
+    try:
+      msg = EmailMessage()
+
+      msg["Subject"] = "No Reply"
+      msg["From"] = "paulolux814@gmail.com"
+      msg["To"] = email_usuario
+
+      msg.set_content(
+        f"""  Olá,
+
+  Recebemos uma solicitação para redefinir a senha da sua conta.
+
+  Utilize o código abaixo para continuar o processo de recuperação:
+
+  Código de recuperação: {codigo}
+
+  Por motivos de segurança, este código é válido por 5 minutos e deve ser utilizado apenas por você.
+
+  Se você não solicitou a recuperação de senha, ignore este e-mail. Nenhuma alteração será realizada em sua conta.
+
+  Atenciosamente,
+
+  Equipe de Suporte"""
+      )
+
+      with smtplib.SMTP_SSL(
+        "smtp.gmail.com",
+        465
+      ) as smtp:
+        smtp.login(
+          "samuelbonfimaraujo@gmail.com",
+          "ieqp nccw rukn wtps"
+        )
+
+        smtp.send_message(msg)
+    
+      Aluno.cursor.execute(
+    """
+    UPDATE users
+    SET reset_code = ?, reset_expires = ?
+    WHERE login = ?
+    """,
+    (codigo, expira_em, user)
+)
+      Aluno.conn.commit()
+      return True
+    except Exception as e:
+      print(f"ERRO: {e}")
+      return False
+
+  @staticmethod
+  def verificarCodigo(login, codigo_digitado):
+    Aluno.cursor.execute("SELECT reset_code, reset_expires FROM users WHERE login = ?", (login,))
+
+    row = Aluno.cursor.fetchone()
+
+    if row:
+      codigo_salvo = row[0]
+      expiracao = row[1]
+
+      if (
+        codigo_digitado == codigo_salvo 
+        and time.time() < expiracao
+      ):
+        print("Código válido")
+
   @staticmethod
   def encrypt(senha):
     hash_senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt()).decode()
@@ -61,9 +143,9 @@ CREATE TABLE IF NOT EXISTS users (
     if row:
       hash_salvo = row[7]
       if bcrypt.checkpw(passwd.encode(), hash_salvo.encode()):
-        print("OK")
+        return True
       else:
-        print("Senha ou login incorreto")
+        return False
   
   @staticmethod
   def calcular_idade(data_str):
