@@ -21,10 +21,11 @@ def Main():
                 mensagem = "Login ou senha incorreto"
 
             elif a is True:
-                return redirect(url_for("BemVindo'"))
+                return redirect(url_for("BemVindo", login=usuario))
 
         return render_template(
             "login.html",
+            login=login,
             mensagem=mensagem
         )
 
@@ -132,9 +133,26 @@ def Main():
 
         return render_template("register.html", mensagem=mensagem)
 
-    @app.route("/BemVindo")
-    def BemVindo():
-        return render_template("index.html")
+    @app.route("/BemVindo/<login>")
+    def BemVindo(login):
+        Aluno.cursor.execute("SELECT * FROM users WHERE login = ?", (login,))
+        row = Aluno.cursor.fetchone()
+
+        if row:
+            id = row[0]
+            nome = row[2]
+            email = row[3]
+            phone = row[4]
+            birthday = row[5]
+            student = row[6]
+            age = Aluno.calcular_idade(birthday)
+            if student == '0':
+                is_student = 'No'
+            else:
+                is_student = 'Yes'
+        return render_template("index.html", id=id, is_student=is_student, login=login, nome=nome, email=email, phone=phone, birthday=birthday, age=age)
+    
+    Aluno.show()
 
     app.run(host="0.0.0.0", port=5000, debug=True)
 

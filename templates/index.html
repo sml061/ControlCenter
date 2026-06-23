@@ -1,11 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bem Vindo</title>
+    <meta charset="UTF-8">
+    <title>Dicionário de Programação</title>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-  <h1>Bem Vindo</h1>
+
+    <form>
+        <h2 class="subtitle">Dados do usuario</h2>
+
+        <dl>
+            <dt>ID</dt>
+            <dd>{{ id }}</dd>
+
+            <dt>UserName</dt>
+            <dd>{{ login }}</dd>
+
+            <dt>Nome</dt>
+            <dd>{{ nome }}</dd>
+
+            <dt>Email</dt>
+            <dd>{{ email }}</dd>
+
+            <dt>Phone</dt>
+            <dd>{{ phone }}</dd>
+
+            <dt>Is Student</dt>
+            <dd>{{ is_student }}</dd>
+
+            <dt>BirthDay</dt>
+            <dd>{{ birthday }}</dd>
+
+            <dt>Age</dt>
+            <dd>{{ age }}</dd>
+        </dl>
+        <a href="{{ url_for('nova_senha', login=login) }}">Alterar Senha</a>
+    </form>
+
+
 </body>
 </html>

@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS users (
       msg = EmailMessage()
 
       msg["Subject"] = "No Reply"
-      msg["From"] = "paulolux814@gmail.com"
+      msg["From"] = Aluno.resultadoJson["email"]
       msg["To"] = email_usuario
 
       msg.set_content(
@@ -75,8 +75,8 @@ CREATE TABLE IF NOT EXISTS users (
         465
       ) as smtp:
         smtp.login(
-          "samuelbonfimaraujo@gmail.com",
-          "ieqp nccw rukn wtps"
+          Aluno.resultadoJson["email"],
+          Aluno.resultadoJson["senhaAplicativo"]
         )
 
         smtp.send_message(msg)
